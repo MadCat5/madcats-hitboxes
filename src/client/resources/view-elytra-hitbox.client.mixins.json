@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "view_elytra_hitbox.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"renderHitboxMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

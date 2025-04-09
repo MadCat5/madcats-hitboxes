@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "view-elytra-hitbox",
+	"version": "${version}",
+	"name": "MadCats Hitboxes",
+	"description": "Hide hitboxes of entities!",
+	"authors": [
+		"MadCat"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/view-elytra-hitbox/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"view_elytra_hitbox.ViewElytraHitboxClient"
+		],
+		"modmenu": [
+			"view_elytra_hitbox.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		{
+			"config": "view-elytra-hitbox.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": [
+			"~1.21"
+		],
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
