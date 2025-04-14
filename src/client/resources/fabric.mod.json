@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "view-elytra-hitbox",
+	"id": "madcats-hitboxes",
 	"version": "${version}",
 	"name": "MadCats Hitboxes",
 	"description": "Hide hitboxes of entities!",
@@ -9,22 +9,22 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/MadCat5/madcats-hitboxes"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/view-elytra-hitbox/icon.png",
+	"icon": "assets/madcats-hitboxes/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"view_elytra_hitbox.ViewElytraHitboxClient"
+			"madcats_hitboxes.MadcatsHitboxesInit"
 		],
 		"modmenu": [
-			"view_elytra_hitbox.ModMenuIntegration"
+			"madcats_hitboxes.ModMenuIntegration"
 		]
 	},
 	"mixins": [
 		{
-			"config": "view-elytra-hitbox.client.mixins.json",
+			"config": "madcats-hitboxes.client.mixins.json",
 			"environment": "client"
 		}
 	],
@@ -35,6 +35,7 @@
 			"<=1.21.3"
 		],
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"yet_another_config_lib_v3": ">=3.6.1+1.21-fabric"
 	}
 }

@@ -1,13 +1,7 @@
-package view_elytra_hitbox;
+package madcats_hitboxes;
 
 import me.shedaniel.autoconfig.AutoConfig;
 
 public class configAccess {
     public static ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-
-    public static void updateConfig() {
-        config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-    }
-
-
 }

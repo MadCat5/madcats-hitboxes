@@ -1,6 +1,8 @@
 {
-  "text.autoconfig.ClothConfig.option.Enabled": "Enabled",
-  "text.autoconfig.ClothConfig.option.ShowSelf": "Show Your Own Hitbox",
+  "text.autoconfig.ClothConfig.title": "MadCat's Hitboxes",
+
+  "text.autoconfig.ClothConfig.option.Enabled": "$f$lEnabled",
+  "text.autoconfig.ClothConfig.option.ShowSelf": "$fShow Your Own Hitbox",
 
 
   "text.autoconfig.ClothConfig.option.playerOption": "Player hitbox states:",

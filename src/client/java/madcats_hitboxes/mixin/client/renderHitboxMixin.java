@@ -1,4 +1,4 @@
-package view_elytra_hitbox.mixin.client;
+package madcats_hitboxes.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
@@ -19,11 +19,11 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import view_elytra_hitbox.ModConfig;
-import view_elytra_hitbox.configAccess;
+import madcats_hitboxes.ModConfig;
+import madcats_hitboxes.configAccess;
 
 
-@Mixin(EntityRenderDispatcher.class)
+@Mixin(value = EntityRenderDispatcher.class, priority = 10)
 public class renderHitboxMixin {
 	@Unique
 	private static final ModConfig config = configAccess.config;

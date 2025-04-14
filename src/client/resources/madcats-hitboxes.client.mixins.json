@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "view_elytra_hitbox.mixin.client",
+	"package": "madcats_hitboxes.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"renderHitboxMixin"
