@@ -13,6 +13,8 @@ public class ModConfig implements ConfigData {
     public playerHitbox playerOption = new playerHitbox();
 
     public static class playerHitbox {
+        public boolean Disable = false;
+        public boolean Enable = false;
         public boolean showElytra = true;
         public boolean showSwimming = true;
         public boolean showSneaking = true;
@@ -27,6 +29,8 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public Passive passive = new Passive();
         public  static class Passive {
+            public boolean Disable = false;
+            public boolean Enable = false;
             public boolean allay = true;
             public boolean armadillo = true;
             public boolean axolotl = true;
@@ -72,6 +76,8 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public Hostile hostile = new Hostile();
         public  static class Hostile {
+            public boolean Disable = false;
+            public boolean Enable = false;
             public boolean blaze = true;
             public boolean bogged = true;
             public boolean breeze = true;
@@ -163,8 +169,10 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public Other othersOption = new Other();
     public static class Other {
+        public boolean Disable = false;
+        public boolean Enable = false;
         public boolean ominousItemSpawner = true;
-        public  boolean evokerFangs = true;
+        public boolean evokerFangs = true;
         public boolean item = true;
         public boolean fallingBlocks = true;
         public boolean armorStand = true;
@@ -173,6 +181,7 @@ public class ModConfig implements ConfigData {
         public boolean experience = true;
         public boolean itemFrame = true;
         public boolean minecart = true;
+        public boolean tnt = true;
     }
 
     @ConfigEntry.Gui.CollapsibleObject
@@ -181,5 +190,23 @@ public class ModConfig implements ConfigData {
         public boolean display = true;
         public boolean interaction = true;
     }
+
+    @ConfigEntry.Gui.CollapsibleObject
+    public Vector vector = new Vector();
+    public static class Vector {
+        public boolean player = true;
+        public boolean item = true;
+        public boolean boat = true;
+        public boolean endCrystal = true;
+        public boolean experience = true;
+        public boolean itemFrame = true;
+        public boolean minecart = true;
+        public boolean projectile = true;
+        public boolean hostileMob = true;
+        public boolean passiveMob = true;
+        public boolean wither = true;
+        public boolean enderDragon = true;
+    }
+
 
 }

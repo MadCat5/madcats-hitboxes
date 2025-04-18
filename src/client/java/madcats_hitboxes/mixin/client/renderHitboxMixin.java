@@ -1,5 +1,6 @@
 package madcats_hitboxes.mixin.client;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -14,6 +15,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.*;
 import net.minecraft.entity.vehicle.*;
+import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,11 +30,14 @@ import madcats_hitboxes.configAccess;
 public class renderHitboxMixin {
 	@Unique
 	private static final ModConfig config = configAccess.config;
+	private static Entity tempEntity;
 
 	@Inject(at = @At("HEAD"), method = "renderHitbox", cancellable = true)
 	private static void cond(MatrixStack matrices, VertexConsumer vertices, Entity entity, float tickDelta, float red, float green, float blue, CallbackInfo ci) {
 
 		if (config.Enabled) {
+			tempEntity = entity;
+
 			if (entity instanceof PlayerEntity player) {
 				if (player == MinecraftClient.getInstance().player){if (!config.ShowSelf){ci.cancel();}}
 				if (player.isFallFlying()) {if (!config.playerOption.showElytra) {ci.cancel();}
@@ -109,14 +115,14 @@ public class renderHitboxMixin {
 				if (mob instanceof PiglinEntity) {
 					if (mob.isBaby()) {if (!config.mobsOption.baby.piglin) {ci.cancel();}} else if (!config.mobsOption.hostile.piglin) {ci.cancel();}}
 				if (mob instanceof PiglinBruteEntity) {if (!config.mobsOption.hostile.piglinBrute) {ci.cancel();}}
-				if (mob instanceof PillagerEntity) {if (config.mobsOption.hostile.pillager) {ci.cancel();}}
-				if (mob instanceof RavagerEntity) {if (config.mobsOption.hostile.ravager) {ci.cancel();}}
+				if (mob instanceof PillagerEntity) {if (!config.mobsOption.hostile.pillager) {ci.cancel();}}
+				if (mob instanceof RavagerEntity) {if (!config.mobsOption.hostile.ravager) {ci.cancel();}}
 				if (mob instanceof ShulkerEntity) {if (!config.mobsOption.hostile.shulker) {ci.cancel();}}
-				if (mob instanceof SilverfishEntity) {if (config.mobsOption.hostile.silverfish) {ci.cancel();}}
-				if (mob instanceof SkeletonEntity) {if (config.mobsOption.hostile.skeleton) {ci.cancel();}}
+				if (mob instanceof SilverfishEntity) {if (!config.mobsOption.hostile.silverfish) {ci.cancel();}}
+				if (mob instanceof SkeletonEntity) {if (!config.mobsOption.hostile.skeleton) {ci.cancel();}}
 				if (mob instanceof SlimeEntity) {if (config.mobsOption.hostile.slime) {ci.cancel();}}
 				if (mob instanceof SpiderEntity) {if (!config.mobsOption.hostile.spider) {ci.cancel();}}
-				if (mob instanceof StrayEntity) {if (config.mobsOption.hostile.stray) {ci.cancel();}}
+				if (mob instanceof StrayEntity) {if (!config.mobsOption.hostile.stray) {ci.cancel();}}
 				if (mob instanceof VexEntity) {if (!config.mobsOption.hostile.vex) {ci.cancel();}}
 				if (mob instanceof VindicatorEntity) {if (!config.mobsOption.hostile.vindicator) {ci.cancel();}}
 				if (mob instanceof WardenEntity) {if (!config.mobsOption.hostile.warden) {ci.cancel();}}
@@ -144,6 +150,7 @@ public class renderHitboxMixin {
 				if (mob instanceof ZombieHorseEntity) {if (!config.mobsOption.unused.zombieHorse) {ci.cancel();}}
 			}
 
+			/// projectiles
 			if (entity instanceof ProjectileEntity projectile) {
 				if (projectile instanceof ArrowEntity || projectile instanceof SpectralArrowEntity) {if (!config.projectilesOption.arrow) {ci.cancel();}}
 				if (projectile instanceof ExperienceBottleEntity) {if (!config.projectilesOption.bottleXP) {ci.cancel();}}
@@ -174,6 +181,8 @@ public class renderHitboxMixin {
 			if (entity instanceof ExperienceOrbEntity) {if (!config.othersOption.experience) {ci.cancel();}}
 			if (entity instanceof ItemFrameEntity || entity instanceof GlowItemFrameEntity) {if (!config.othersOption.itemFrame) {ci.cancel();}}
 			if (entity instanceof AbstractMinecartEntity) {if (!config.othersOption.minecart) {ci.cancel();}}
+			if (entity instanceof TntEntity) {if (!config.othersOption.tnt) {ci.cancel();}}
+
 
 			/// invisible
 			if (entity instanceof DisplayEntity) {if (!config.invisibleOption.display) {ci.cancel();}}
@@ -181,4 +190,32 @@ public class renderHitboxMixin {
 
 		}
 	}
+
+
+
+		@WrapWithCondition(
+				method = "renderHitbox",
+				at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/EntityRenderDispatcher;drawVector(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Lorg/joml/Vector3f;Lnet/minecraft/util/math/Vec3d;I)V"))
+
+		private static boolean shouldDrawVector(MatrixStack matrices, VertexConsumer vertexConsumers, Vector3f offset, Vec3d vec, int color) {
+			if (config.Enabled) {
+				if (tempEntity instanceof PlayerEntity && config.vector.player) {return true;}
+				if (tempEntity instanceof ItemEntity && config.vector.item) {return true;}
+				if ((tempEntity instanceof BoatEntity || tempEntity instanceof ChestBoatEntity) && config.vector.boat) {return true;}
+				if (tempEntity instanceof EndCrystalEntity && config.vector.endCrystal) {return true;}
+				if (tempEntity instanceof ExperienceOrbEntity && config.vector.experience) {return true;}
+				if (tempEntity instanceof ItemFrameEntity && config.vector.itemFrame) {return true;}
+				if (tempEntity instanceof AbstractMinecartEntity && config.vector.minecart) {return true;}
+				if (tempEntity instanceof ProjectileEntity && config.vector.projectile) {return true;}
+				if (tempEntity instanceof HostileEntity && config.vector.hostileMob) {return true;}
+				if (tempEntity instanceof PassiveEntity && config.vector.passiveMob) {return true;}
+				if (tempEntity instanceof WitherEntity && config.vector.wither) {return true;}
+				if (tempEntity instanceof EnderDragonEntity && config.vector.enderDragon) {return true;}
+				return false;
+				}
+			return true;
+		}
+
+
+
 }

@@ -1,18 +1,19 @@
 package madcats_hitboxes;
 
 import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-
-import java.util.Spliterator;
+import net.minecraft.text.TextColor;
 
 
 public class ModConfig_YACL {
 
 
     public static Screen createGui(Screen parentScreen) {
+
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
 
@@ -22,10 +23,12 @@ public class ModConfig_YACL {
                 .category(ConfigCategory.createBuilder()
                         .name(Text.literal("General"))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Text.literal("Enabled"))
+                                .name(Text.literal("Enable").styled(style -> style.withColor(TextColor.fromRgb(0x00B3DC))))
                                 .description(OptionDescription.of(Text.literal("Enable the mod")))
                                 .binding(config.Enabled, () -> config.Enabled, newVal -> config.Enabled = newVal)
-                                .controller(TickBoxControllerBuilder::create)
+                                .controller(opt -> BooleanControllerBuilder.create(opt)
+                                .formatValue(val -> val? Text.literal("Enabled") : Text.literal("Disabled"))
+                                        .coloured(true))
                                 .build())
                         .option(Option.<Boolean>createBuilder()
                                 .name(Text.literal("Show Self"))
@@ -35,37 +38,47 @@ public class ModConfig_YACL {
                                 .build())
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Player states"))
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Elytra"))
                                         .description(OptionDescription.of(Text.literal("Show the hitbox while in elytra mode")))
-                                        .binding(config.playerOption.showElytra, () -> config.playerOption.showElytra, newVal -> config.playerOption.showElytra = newVal)
+                                        .binding(
+                                                config.playerOption.showElytra,
+                                                () -> config.playerOption.showElytra,
+                                                newVal -> config.playerOption.showElytra = newVal)
+
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Swimming"))
                                         .description(OptionDescription.of(Text.literal("Show the hitbox while in swimming or crawling mode")))
-                                        .binding(config.playerOption.showSwimming, () -> config.playerOption.showSwimming, newVal -> config.playerOption.showSwimming = newVal)
+                                        .binding(config.playerOption.showSwimming, () -> config.playerOption.showSwimming,
+                                                newVal -> config.playerOption.showSwimming = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Sneaking"))
                                         .description(OptionDescription.of(Text.literal("Show the hitbox while sneaking")))
-                                        .binding(config.playerOption.showSneaking, () -> config.playerOption.showSneaking, newVal -> config.playerOption.showSneaking = newVal)
+                                        .binding(config.playerOption.showSneaking, () -> config.playerOption.showSneaking,
+                                                newVal -> config.playerOption.showSneaking = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Sleeping"))
                                         .description(OptionDescription.of(Text.literal("Show the hitbox while sleeping in a bed")))
-                                        .binding(config.playerOption.showSleeping, () -> config.playerOption.showSleeping, newVal -> config.playerOption.showSleeping = newVal)
+                                        .binding(config.playerOption.showSleeping, () -> config.playerOption.showSleeping,
+                                                newVal -> config.playerOption.showSleeping = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Standing"))
                                         .description(OptionDescription.of(Text.literal("Show the hitbox while standing (strictly: not doing any of the above)")))
-                                        .binding(config.playerOption.showStanding, () -> config.playerOption.showStanding, newVal -> config.playerOption.showStanding = newVal)
+                                        .binding(config.playerOption.showStanding, () -> config.playerOption.showStanding,
+                                                newVal -> config.playerOption.showStanding = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
+
 
 
 
@@ -76,6 +89,7 @@ public class ModConfig_YACL {
 
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Passive mobs"))
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Allay"))
                                         .binding(config.mobsOption.passive.allay, () -> config.mobsOption.passive.allay, newVal -> config.mobsOption.passive.allay = newVal)
@@ -281,6 +295,7 @@ public class ModConfig_YACL {
                                         .binding(config.mobsOption.passive.ironGolem, () -> config.mobsOption.passive.ironGolem, newVal -> config.mobsOption.passive.ironGolem = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
+
                                 .build())
 
 
@@ -292,9 +307,11 @@ public class ModConfig_YACL {
 
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Hostile mobs"))
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Blaze"))
-                                        .binding(config.mobsOption.hostile.blaze, () -> config.mobsOption.hostile.blaze, newVal -> config.mobsOption.hostile.blaze = newVal)
+                                        .binding(config.mobsOption.hostile.blaze, () -> config.mobsOption.hostile.blaze,
+                                                newVal -> config.mobsOption.hostile.blaze = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
@@ -467,16 +484,18 @@ public class ModConfig_YACL {
                                         .binding(config.mobsOption.hostile.zombiePiglin, () -> config.mobsOption.hostile.zombiePiglin, newVal -> config.mobsOption.hostile.zombiePiglin = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
-
-
-
-
-
-
                                 .build())
+
+
+
+
+
+
+
+
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Bosses and unused mobs"))
-
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Ender Dragon"))
                                         .binding(config.mobsOption.boss.dragon, () -> config.mobsOption.boss.dragon, newVal -> config.mobsOption.boss.dragon = newVal)
@@ -507,8 +526,10 @@ public class ModConfig_YACL {
 
 
 
+
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Hostile baby variants"))
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Drowned"))
                                         .binding(config.mobsOption.baby.drowned, () -> config.mobsOption.baby.drowned, newVal -> config.mobsOption.baby.drowned = newVal)
@@ -549,10 +570,13 @@ public class ModConfig_YACL {
                                         .binding(config.mobsOption.baby.zombieVillager, () -> config.mobsOption.baby.zombieVillager, newVal -> config.mobsOption.baby.zombieVillager = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
-
                                 .build())
+
+
+
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Projectiles"))
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Arrow"))
                                         .binding(config.projectilesOption.arrow, () -> config.projectilesOption.arrow, newVal -> config.projectilesOption.arrow = newVal)
@@ -633,10 +657,13 @@ public class ModConfig_YACL {
                                         .binding(config.projectilesOption.llamaSpit, () -> config.projectilesOption.llamaSpit, newVal -> config.projectilesOption.llamaSpit = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
-
                                 .build())
+
+
+
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Other entities"))
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Ominous item spawner"))
                                         .binding(config.othersOption.ominousItemSpawner, () -> config.othersOption.ominousItemSpawner, newVal -> config.othersOption.ominousItemSpawner = newVal)
@@ -685,13 +712,21 @@ public class ModConfig_YACL {
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Minecart"))
+                                        .description(OptionDescription.of(Text.literal("All types")))
                                         .binding(config.othersOption.minecart, () -> config.othersOption.minecart, newVal -> config.othersOption.minecart = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
-
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("TNT"))
+                                        .binding(config.othersOption.tnt, () -> config.othersOption.tnt, newVal -> config.othersOption.tnt = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
                                 .build())
+
+
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Invisible entities"))
+                                .collapsed(true)
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Display"))
                                         .description(OptionDescription.of(Text.literal("Only the look vector is visible")))
@@ -704,10 +739,77 @@ public class ModConfig_YACL {
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .build())
-                        .build())
 
+
+                        .group(OptionGroup.createBuilder()
+                                .name(Text.literal("Look vectors"))
+                                .collapsed(true)
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Player"))
+                                        .binding(config.vector.player, () -> config.vector.player, newVal -> config.vector.player = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Item"))
+                                        .binding(config.vector.item, () -> config.vector.item, newVal -> config.vector.item = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Boat"))
+                                        .binding(config.vector.boat, () -> config.vector.boat, newVal -> config.vector.boat = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("End Crystal"))
+                                        .binding(config.vector.endCrystal, () -> config.vector.endCrystal, newVal -> config.vector.endCrystal = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Experience Orb"))
+                                        .binding(config.vector.experience, () -> config.vector.experience, newVal -> config.vector.experience = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Item Frame"))
+                                        .binding(config.vector.itemFrame, () -> config.vector.itemFrame, newVal -> config.vector.itemFrame = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Minecart"))
+                                        .binding(config.vector.minecart, () -> config.vector.minecart, newVal -> config.vector.minecart = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Projectile"))
+                                        .binding(config.vector.projectile, () -> config.vector.projectile, newVal -> config.vector.projectile = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Hostile Mob"))
+                                        .binding(config.vector.hostileMob, () -> config.vector.hostileMob, newVal -> config.vector.hostileMob = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Passive Mob"))
+                                        .binding(config.vector.passiveMob, () -> config.vector.passiveMob, newVal -> config.vector.passiveMob = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Wither"))
+                                        .binding(config.vector.wither, () -> config.vector.wither, newVal -> config.vector.wither = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .option(Option.<Boolean>createBuilder()
+                                        .name(Text.literal("Ender Dragon"))
+                                        .binding(config.vector.enderDragon, () -> config.vector.enderDragon, newVal -> config.vector.enderDragon = newVal)
+                                        .controller(TickBoxControllerBuilder::create)
+                                        .build())
+                                .build())
+
+                        .build())
                 .build()
                 .generateScreen(parentScreen);
+
         return screen;
     }
 }
