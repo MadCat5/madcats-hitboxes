@@ -13,8 +13,6 @@ public class ModConfig implements ConfigData {
     public playerHitbox playerOption = new playerHitbox();
 
     public static class playerHitbox {
-        public boolean Disable = false;
-        public boolean Enable = false;
         public boolean showElytra = true;
         public boolean showSwimming = true;
         public boolean showSneaking = true;
@@ -29,8 +27,6 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public Passive passive = new Passive();
         public  static class Passive {
-            public boolean Disable = false;
-            public boolean Enable = false;
             public boolean allay = true;
             public boolean armadillo = true;
             public boolean axolotl = true;
@@ -76,8 +72,6 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.CollapsibleObject
         public Hostile hostile = new Hostile();
         public  static class Hostile {
-            public boolean Disable = false;
-            public boolean Enable = false;
             public boolean blaze = true;
             public boolean bogged = true;
             public boolean breeze = true;
@@ -169,8 +163,6 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public Other othersOption = new Other();
     public static class Other {
-        public boolean Disable = false;
-        public boolean Enable = false;
         public boolean ominousItemSpawner = true;
         public boolean evokerFangs = true;
         public boolean item = true;
