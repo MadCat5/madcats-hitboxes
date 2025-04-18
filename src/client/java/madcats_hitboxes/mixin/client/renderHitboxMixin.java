@@ -30,6 +30,7 @@ import madcats_hitboxes.configAccess;
 public class renderHitboxMixin {
 	@Unique
 	private static final ModConfig config = configAccess.config;
+	@Unique
 	private static Entity tempEntity;
 
 	@Inject(at = @At("HEAD"), method = "renderHitbox", cancellable = true)
