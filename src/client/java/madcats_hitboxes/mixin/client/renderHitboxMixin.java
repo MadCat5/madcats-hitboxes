@@ -1,6 +1,5 @@
 package madcats_hitboxes.mixin.client;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -15,8 +14,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.*;
 import net.minecraft.entity.vehicle.*;
-import net.minecraft.util.math.Vec3d;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,13 +28,11 @@ public class renderHitboxMixin {
 	@Unique
 	private static final ModConfig config = configAccess.config;
 	@Unique
-	private static Entity tempEntity;
 
 	@Inject(at = @At("HEAD"), method = "renderHitbox", cancellable = true)
-	private static void cond(MatrixStack matrices, VertexConsumer vertices, Entity entity, float tickDelta, float red, float green, float blue, CallbackInfo ci) {
+	private static void cond(MatrixStack matrices, VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) {
 
 		if (config.Enabled) {
-			tempEntity = entity;
 
 			if (entity instanceof PlayerEntity player) {
 				if (player == MinecraftClient.getInstance().player){if (!config.ShowSelf){ci.cancel();}}
@@ -95,8 +90,6 @@ public class renderHitboxMixin {
 
 				/// Hostile Mobs
 				if (mob instanceof BlazeEntity) {if (!config.mobsOption.hostile.blaze) {ci.cancel();}}
-				if (mob instanceof BoggedEntity) {if (!config.mobsOption.hostile.bogged) {ci.cancel();}}
-				if (mob instanceof BreezeEntity) {if (!config.mobsOption.hostile.breeze) {ci.cancel();}}
 				if (mob instanceof CaveSpiderEntity) {if (!config.mobsOption.hostile.caveSpider) {ci.cancel();}}
 				if (mob instanceof CreeperEntity) {if (!config.mobsOption.hostile.creeper) {ci.cancel();}}
 				if (mob instanceof DrownedEntity) {
@@ -163,7 +156,6 @@ public class renderHitboxMixin {
 				if (projectile instanceof SnowballEntity) {if (!config.projectilesOption.snowball) {ci.cancel();}}
 				if (projectile instanceof PotionEntity) {if (!config.projectilesOption.splashPotion) {ci.cancel();}}
 				if (projectile instanceof TridentEntity) {if (!config.projectilesOption.trident) {ci.cancel();}}
-				if (projectile instanceof WindChargeEntity) {if (!config.projectilesOption.windCharge) {ci.cancel();}}
 				if (entity instanceof WitherSkullEntity) {if (!config.projectilesOption.witherSkull) {ci.cancel();}}
 				if (entity instanceof ShulkerBulletEntity) {if (!config.projectilesOption.shulkerBullet) {ci.cancel();}}
 				if (entity instanceof FishingBobberEntity) {if (!config.projectilesOption.fishingBobber) {ci.cancel();}}
@@ -173,7 +165,6 @@ public class renderHitboxMixin {
 
 			/// others
 			if (entity instanceof EvokerFangsEntity) {if (!config.othersOption.evokerFangs) {ci.cancel();}}
-			if (entity instanceof OminousItemSpawnerEntity) {if (!config.othersOption.ominousItemSpawner) {ci.cancel();}}
 			if (entity instanceof ItemEntity) {if (!config.othersOption.item) {ci.cancel();}}
 			if (entity instanceof FallingBlockEntity) {if (!config.othersOption.fallingBlocks) {ci.cancel();}}
 			if (entity instanceof ArmorStandEntity) {if (!config.othersOption.armorStand) {ci.cancel();}}
@@ -192,29 +183,32 @@ public class renderHitboxMixin {
 		}
 	}
 
+private static boolean shouldCancel = true;
 
-
-		@WrapWithCondition(
+		@Inject(
 				method = "renderHitbox",
-				at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/EntityRenderDispatcher;drawVector(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Lorg/joml/Vector3f;Lnet/minecraft/util/math/Vec3d;I)V"))
+				at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getRotationVec(F)Lnet/minecraft/util/math/Vec3d;"), cancellable = true)
 
-		private static boolean shouldDrawVector(MatrixStack matrices, VertexConsumer vertexConsumers, Vector3f offset, Vec3d vec, int color) {
+		private static void shouldDrawVector(MatrixStack matrices, VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) {
 			if (config.Enabled) {
-				if (tempEntity instanceof PlayerEntity && config.vector.player) {return true;}
-				if (tempEntity instanceof ItemEntity && config.vector.item) {return true;}
-				if ((tempEntity instanceof BoatEntity || tempEntity instanceof ChestBoatEntity) && config.vector.boat) {return true;}
-				if (tempEntity instanceof EndCrystalEntity && config.vector.endCrystal) {return true;}
-				if (tempEntity instanceof ExperienceOrbEntity && config.vector.experience) {return true;}
-				if (tempEntity instanceof ItemFrameEntity && config.vector.itemFrame) {return true;}
-				if (tempEntity instanceof AbstractMinecartEntity && config.vector.minecart) {return true;}
-				if (tempEntity instanceof ProjectileEntity && config.vector.projectile) {return true;}
-				if (tempEntity instanceof HostileEntity && config.vector.hostileMob) {return true;}
-				if (tempEntity instanceof PassiveEntity && config.vector.passiveMob) {return true;}
-				if (tempEntity instanceof WitherEntity && config.vector.wither) {return true;}
-				if (tempEntity instanceof EnderDragonEntity && config.vector.enderDragon) {return true;}
-				return false;
+				if (entity instanceof PlayerEntity) {if (config.vector.player) {shouldCancel = false;}}
+				if (entity instanceof ItemEntity) {if (config.vector.item) {shouldCancel = false;}}
+				if (entity instanceof BoatEntity || entity instanceof ChestBoatEntity) {if (!config.vector.boat) {shouldCancel = false;}}
+				if (entity instanceof EndCrystalEntity) {if (config.vector.endCrystal) {shouldCancel = false;}}
+				if (entity instanceof ExperienceOrbEntity) {if (config.vector.experience) {shouldCancel = false;}}
+				if (entity instanceof ItemFrameEntity) {if (config.vector.itemFrame) {shouldCancel = false;}}
+				if (entity instanceof AbstractMinecartEntity) {if (config.vector.minecart) {shouldCancel = false;}}
+				if (entity instanceof ProjectileEntity) {if (config.vector.projectile) {shouldCancel = false;}}
+				if (entity instanceof HostileEntity) {if (config.vector.hostileMob) {shouldCancel = false;}}
+				if (entity instanceof PassiveEntity) {if (config.vector.passiveMob) {shouldCancel = false;}}
+				if (entity instanceof WitherEntity) {if (config.vector.wither) {shouldCancel = false;}}
+				if (entity instanceof EnderDragonEntity) {if (config.vector.enderDragon) {shouldCancel = false;}}
+
+
+				if (shouldCancel) {
+					ci.cancel();
 				}
-			return true;
+			}
 		}
 
 

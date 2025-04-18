@@ -73,8 +73,6 @@ public class ModConfig implements ConfigData {
         public Hostile hostile = new Hostile();
         public  static class Hostile {
             public boolean blaze = true;
-            public boolean bogged = true;
-            public boolean breeze = true;
             public boolean caveSpider = true;
             public boolean creeper = true;
             public boolean drowned = true;
@@ -153,7 +151,6 @@ public class ModConfig implements ConfigData {
         public boolean snowball = true;
         public boolean splashPotion = true;
         public boolean trident = true;
-        public boolean windCharge = true;
         public boolean witherSkull = true;
         public boolean shulkerBullet = true;
         public boolean fishingBobber = true;
@@ -163,7 +160,6 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public Other othersOption = new Other();
     public static class Other {
-        public boolean ominousItemSpawner = true;
         public boolean evokerFangs = true;
         public boolean item = true;
         public boolean fallingBlocks = true;
