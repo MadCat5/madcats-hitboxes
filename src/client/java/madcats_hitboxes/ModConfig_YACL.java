@@ -741,6 +741,8 @@ public class ModConfig_YACL {
                                 .build())
 
 
+
+
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Look vectors"))
                                 .collapsed(true)
