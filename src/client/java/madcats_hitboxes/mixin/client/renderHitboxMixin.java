@@ -41,7 +41,7 @@ public class renderHitboxMixin {
 
 			if (entity instanceof PlayerEntity player) {
 				if (player == MinecraftClient.getInstance().player){if (!config.ShowSelf){ci.cancel();}}
-				if (player.isFallFlying()) {if (!config.playerOption.showElytra) {ci.cancel();}
+				if (player.isGliding()) {if (!config.playerOption.showElytra) {ci.cancel();}
 				} else if (player.isSwimming() || player.isCrawling()) {if (!config.playerOption.showSwimming) {ci.cancel();}
 				} else if (player.isSneaking()) {if (!config.playerOption.showSneaking) {ci.cancel();}
 				} else if (player.isSleeping()) {if (!config.playerOption.showSleeping) {ci.cancel();}
@@ -192,30 +192,34 @@ public class renderHitboxMixin {
 		}
 	}
 
+	@Unique
+	private static boolean shouldCancel = true;
+
+	@Inject(
+			method = "renderHitbox",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexRendering;drawVector(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Lorg/joml/Vector3f;Lnet/minecraft/util/math/Vec3d;I)V"), cancellable = true)
+
+	private static void shouldDrawVector(MatrixStack matrices, VertexConsumer vertices, Entity entity, float tickDelta, float red, float green, float blue, CallbackInfo ci) {
+		if (config.Enabled) {
+			if (entity instanceof PlayerEntity) {if (config.vector.player) {shouldCancel = false;}}
+			if (entity instanceof ItemEntity) {if (config.vector.item) {shouldCancel = false;}}
+			if (entity instanceof BoatEntity || entity instanceof ChestBoatEntity) {if (!config.vector.boat) {shouldCancel = false;}}
+			if (entity instanceof EndCrystalEntity) {if (config.vector.endCrystal) {shouldCancel = false;}}
+			if (entity instanceof ExperienceOrbEntity) {if (config.vector.experience) {shouldCancel = false;}}
+			if (entity instanceof ItemFrameEntity) {if (config.vector.itemFrame) {shouldCancel = false;}}
+			if (entity instanceof AbstractMinecartEntity) {if (config.vector.minecart) {shouldCancel = false;}}
+			if (entity instanceof ProjectileEntity) {if (config.vector.projectile) {shouldCancel = false;}}
+			if (entity instanceof HostileEntity) {if (config.vector.hostileMob) {shouldCancel = false;}}
+			if (entity instanceof PassiveEntity) {if (config.vector.passiveMob) {shouldCancel = false;}}
+			if (entity instanceof WitherEntity) {if (config.vector.wither) {shouldCancel = false;}}
+			if (entity instanceof EnderDragonEntity) {if (config.vector.enderDragon) {shouldCancel = false;}}
 
 
-		@WrapWithCondition(
-				method = "renderHitbox",
-				at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/EntityRenderDispatcher;drawVector(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Lorg/joml/Vector3f;Lnet/minecraft/util/math/Vec3d;I)V"))
-
-		private static boolean shouldDrawVector(MatrixStack matrices, VertexConsumer vertexConsumers, Vector3f offset, Vec3d vec, int color) {
-			if (config.Enabled) {
-				if (tempEntity instanceof PlayerEntity && config.vector.player) {return true;}
-				if (tempEntity instanceof ItemEntity && config.vector.item) {return true;}
-				if ((tempEntity instanceof BoatEntity || tempEntity instanceof ChestBoatEntity) && config.vector.boat) {return true;}
-				if (tempEntity instanceof EndCrystalEntity && config.vector.endCrystal) {return true;}
-				if (tempEntity instanceof ExperienceOrbEntity && config.vector.experience) {return true;}
-				if (tempEntity instanceof ItemFrameEntity && config.vector.itemFrame) {return true;}
-				if (tempEntity instanceof AbstractMinecartEntity && config.vector.minecart) {return true;}
-				if (tempEntity instanceof ProjectileEntity && config.vector.projectile) {return true;}
-				if (tempEntity instanceof HostileEntity && config.vector.hostileMob) {return true;}
-				if (tempEntity instanceof PassiveEntity && config.vector.passiveMob) {return true;}
-				if (tempEntity instanceof WitherEntity && config.vector.wither) {return true;}
-				if (tempEntity instanceof EnderDragonEntity && config.vector.enderDragon) {return true;}
-				return false;
-				}
-			return true;
+			if (shouldCancel) {
+				ci.cancel();
+			}
 		}
+	}
 
 
 
