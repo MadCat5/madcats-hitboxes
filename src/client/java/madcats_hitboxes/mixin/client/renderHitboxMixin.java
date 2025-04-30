@@ -102,7 +102,7 @@ public class renderHitboxMixin {
 				if (mob instanceof DrownedEntity) {
 					if (mob.isBaby()) {if (!config.mobsOption.baby.drowned) {ci.cancel();}} else if (!config.mobsOption.hostile.drowned) {ci.cancel();}}
 				if (mob instanceof ElderGuardianEntity) {if (!config.mobsOption.hostile.elderGuardian) {ci.cancel();}}
-				if (mob instanceof EndermanEntity) {if (config.mobsOption.hostile.enderman) {ci.cancel();}}
+				if (mob instanceof EndermanEntity) {if (!config.mobsOption.hostile.enderman) {ci.cancel();}}
 				if (mob instanceof EndermiteEntity) {if (!config.mobsOption.hostile.endermite) {ci.cancel();}}
 				if (mob instanceof EvokerEntity) {if (!config.mobsOption.hostile.evoker) {ci.cancel();}}
 				if (mob instanceof GhastEntity) {if (!config.mobsOption.hostile.ghast) {ci.cancel();}}
@@ -121,7 +121,7 @@ public class renderHitboxMixin {
 				if (mob instanceof ShulkerEntity) {if (!config.mobsOption.hostile.shulker) {ci.cancel();}}
 				if (mob instanceof SilverfishEntity) {if (!config.mobsOption.hostile.silverfish) {ci.cancel();}}
 				if (mob instanceof SkeletonEntity) {if (!config.mobsOption.hostile.skeleton) {ci.cancel();}}
-				if (mob instanceof SlimeEntity) {if (config.mobsOption.hostile.slime) {ci.cancel();}}
+				if (mob instanceof SlimeEntity) {if (!config.mobsOption.hostile.slime) {ci.cancel();}}
 				if (mob instanceof SpiderEntity) {if (!config.mobsOption.hostile.spider) {ci.cancel();}}
 				if (mob instanceof StrayEntity) {if (!config.mobsOption.hostile.stray) {ci.cancel();}}
 				if (mob instanceof VexEntity) {if (!config.mobsOption.hostile.vex) {ci.cancel();}}
