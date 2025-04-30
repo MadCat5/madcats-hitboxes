@@ -746,6 +746,7 @@ public class ModConfig_YACL {
                         .group(OptionGroup.createBuilder()
                                 .name(Text.literal("Look vectors"))
                                 .collapsed(true)
+                                .description(OptionDescription.of(Text.literal("The blue line that shows you where an entity is looking at, it's pretty much useless for all the other entities though.")))
                                 .option(Option.<Boolean>createBuilder()
                                         .name(Text.literal("Player"))
                                         .binding(config.vector.player, () -> config.vector.player, newVal -> config.vector.player = newVal)
