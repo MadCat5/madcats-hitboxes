@@ -47,7 +47,6 @@ public class renderHitboxMixin {
 
 				/// Passive Mobs
 				if (mob instanceof AllayEntity) {if (!config.mobsOption.passive.allay) {ci.cancel();}}
-				if (mob instanceof ArmadilloEntity) {if (!config.mobsOption.passive.armadillo) {ci.cancel();}}
 				if (mob instanceof AxolotlEntity) {if (!config.mobsOption.passive.axolotl) {ci.cancel();}}
 				if (mob instanceof BatEntity) {if (!config.mobsOption.passive.bat) {ci.cancel();}}
 				if (mob instanceof BeeEntity) {if (!config.mobsOption.passive.bee) {ci.cancel();}}

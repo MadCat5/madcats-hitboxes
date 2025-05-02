@@ -28,7 +28,6 @@ public class ModConfig implements ConfigData {
         public Passive passive = new Passive();
         public  static class Passive {
             public boolean allay = true;
-            public boolean armadillo = true;
             public boolean axolotl = true;
             public boolean bat = true;
             public boolean bee = true;
