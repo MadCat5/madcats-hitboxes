@@ -76,6 +76,7 @@ public class ModConfig implements ConfigData {
             public boolean bogged = true;
             public boolean breeze = true;
             public boolean caveSpider = true;
+            public boolean creaking = true;
             public boolean creeper = true;
             public boolean drowned = true;
             public boolean elderGuardian = true;

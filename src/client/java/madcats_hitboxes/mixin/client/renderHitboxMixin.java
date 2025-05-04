@@ -1,6 +1,7 @@
 package madcats_hitboxes.mixin.client;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.sun.jna.platform.win32.Pdh;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -140,6 +141,7 @@ public class renderHitboxMixin {
 						if (!config.mobsOption.baby.zombiePiglin) {ci.cancel();}} else if (!config.mobsOption.hostile.zombiePiglin) {ci.cancel();}}
 				if (mob instanceof ZombieVillagerEntity) {
 					if (mob.isBaby()) {if (!config.mobsOption.baby.zombieVillager) {ci.cancel();}} else if (!config.mobsOption.hostile.zombieVillager) {ci.cancel();}}
+				if (mob instanceof CreakingEntity) {if (!config.mobsOption.hostile.creaking) {ci.cancel();}}
 
 				/// Boss mobs
 				if (mob instanceof EnderDragonEntity) {if (!config.mobsOption.boss.dragon) {ci.cancel();}}
