@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.entity.projectile.thrown.*;
 import net.minecraft.entity.vehicle.*;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import madcats_hitboxes.ModConfig;
 import madcats_hitboxes.configAccess;
 
-
+@Debug(export = true)
 @Mixin(value = EntityRenderDispatcher.class, priority = 10)
 public class renderHitboxMixin {
 	@Unique
@@ -182,13 +183,16 @@ public class renderHitboxMixin {
 		}
 	}
 
-private static boolean shouldCancel = true;
+
+
+
 
 		@Inject(
 				method = "renderHitbox",
 				at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getRotationVec(F)Lnet/minecraft/util/math/Vec3d;"), cancellable = true)
 
 		private static void shouldDrawVector(MatrixStack matrices, VertexConsumer vertices, Entity entity, float tickDelta, CallbackInfo ci) {
+			boolean shouldCancel = true;
 			if (config.Enabled) {
 				if (entity instanceof PlayerEntity) {if (config.vector.player) {shouldCancel = false;}}
 				if (entity instanceof ItemEntity) {if (config.vector.item) {shouldCancel = false;}}
