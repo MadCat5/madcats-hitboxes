@@ -194,14 +194,13 @@ public class renderHitboxMixin {
 		}
 	}
 
-	@Unique
-	private static boolean shouldCancel = true;
 
 	@Inject(
 			method = "renderHitbox",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexRendering;drawVector(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Lorg/joml/Vector3f;Lnet/minecraft/util/math/Vec3d;I)V"), cancellable = true)
 
 	private static void shouldDrawVector(MatrixStack matrices, VertexConsumer vertices, Entity entity, float tickDelta, float red, float green, float blue, CallbackInfo ci) {
+		boolean shouldCancel = true;
 		if (config.Enabled) {
 			if (entity instanceof PlayerEntity) {if (config.vector.player) {shouldCancel = false;}}
 			if (entity instanceof ItemEntity) {if (config.vector.item) {shouldCancel = false;}}
